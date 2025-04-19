@@ -765,7 +765,61 @@ ul.task-list li input[type="checkbox"] {
 
     }
 
-    </script>
+    function shareViaText() {
+
+        const textarea = document.getElementById('discussion-textarea');
+
+        const text = textarea.value.trim();
+
+
+
+        if (!text) {
+
+        alert("Please enter your thoughts first!");
+
+        return;
+
+        }
+
+
+
+        if (text.length > 160) {
+
+        if (!confirm("Your message will be split into multiple texts. Continue?")) {
+
+            return;
+
+        }
+
+        }
+
+
+
+        const encodedText = encodeURIComponent(text);
+
+        const phoneNumber = ""; // Leave empty or add default number
+
+
+
+        // For mobile devices
+
+        if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+
+        window.location.href = `sms:${phoneNumber}?body=${encodedText}`;
+
+        } 
+
+        // For desktop browsers
+
+        else {
+
+        window.open(`https://messages.google.com/web/compose?text=${encodedText}`, '_blank');
+
+        }
+
+     }
+
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

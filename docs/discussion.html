@@ -138,7 +138,6 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#core-question" id="toc-core-question" class="nav-link active" data-scroll-target="#core-question"><span class="header-section-number">3.0.1</span> Core Question</a></li>
   <li><a href="#personal-reflection" id="toc-personal-reflection" class="nav-link" data-scroll-target="#personal-reflection"><span class="header-section-number">3.0.2</span> Personal Reflection</a></li>
   <li><a href="#group-activity" id="toc-group-activity" class="nav-link" data-scroll-target="#group-activity"><span class="header-section-number">3.0.3</span> Group Activity</a></li>
-  <li><a href="#share-your-thoughts" id="toc-share-your-thoughts" class="nav-link" data-scroll-target="#share-your-thoughts"><span class="header-section-number">3.0.4</span> Share Your Thoughts</a></li>
   </ul>
 </nav>
     </div>
@@ -181,18 +180,6 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Breakout Groups (10 mins):</strong><br>
 1. Share one practical application<br>
 2. Pray for each other’s struggles</p>
-</section>
-<section id="share-your-thoughts" class="level3" data-number="3.0.4">
-<h3 data-number="3.0.4" class="anchored" data-anchor-id="share-your-thoughts"><span class="header-section-number">3.0.4</span> Share Your Thoughts</h3>
-<div class="response-form">
-<textarea placeholder="Share your thoughts... (Try to reference specific verses)" rows="4" class="response-input" id="discussion-textarea" spellcheck="true"></textarea>
-<div class="textarea-footer">
-<pre><code>&lt;span id="char-count"&gt;0/500&lt;/span&gt;
-&lt;button class="submit-btn" onclick="submitResponse()"&gt;
-  &lt;i class="fas fa-paper-plane"&gt;&lt;/i&gt; Post
-&lt;/button&gt;</code></pre>
-</div>
-</div>
 
 
 </section>
@@ -760,7 +747,61 @@ ul.task-list li input[type="checkbox"] {
 
     }
 
-    </script>
+    function shareViaText() {
+
+        const textarea = document.getElementById('discussion-textarea');
+
+        const text = textarea.value.trim();
+
+
+
+        if (!text) {
+
+        alert("Please enter your thoughts first!");
+
+        return;
+
+        }
+
+
+
+        if (text.length > 160) {
+
+        if (!confirm("Your message will be split into multiple texts. Continue?")) {
+
+            return;
+
+        }
+
+        }
+
+
+
+        const encodedText = encodeURIComponent(text);
+
+        const phoneNumber = ""; // Leave empty or add default number
+
+
+
+        // For mobile devices
+
+        if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+
+        window.location.href = `sms:${phoneNumber}?body=${encodedText}`;
+
+        } 
+
+        // For desktop browsers
+
+        else {
+
+        window.open(`https://messages.google.com/web/compose?text=${encodedText}`, '_blank');
+
+        }
+
+     }
+
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

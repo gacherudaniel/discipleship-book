@@ -14,7 +14,8 @@ format:
   html:
     theme: cosmo
     toc: true
-    include-after-body: scripts.html
+    include-after-body:
+      - scripts.html
     css: resources/styles.css
 
 revealjs:
