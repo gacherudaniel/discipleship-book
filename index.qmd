@@ -2,7 +2,11 @@
 
 **Key Verse**: *John 3:16*  
 
-> "For God so loved the world..."  
+[John 3:16](#){.verse-link data-verse="john 3:16"}
+
+[John 3:16](#){.verse-link data-verse="john 3:16"}
+
+[Psalm 23:1](#){.verse-link data-verse="psalm 23:1"}
 
 ## Discussion Questions  
 1. What does this verse mean to you?  

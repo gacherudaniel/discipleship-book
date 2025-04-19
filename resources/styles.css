@@ -1,0 +1,198 @@
+/* Bible verse links */
+.verse-link {
+  color: #1a5fb4;
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+/* Disqus container */
+#disqus_thread {
+  margin-top: 3rem;
+  padding: 1rem;
+  border-top: 1px solid #eee;
+}
+
+/* Quiz slides */
+.reveal .slides section {
+  font-size: 1.5em;
+}
+
+.verse-link.loading {
+  color: #999;
+  cursor: wait;
+}
+
+.verse-link.loading::after {
+  content: '...';
+  display: inline;
+}
+
+/* Change animation duration */
+.verse-container {
+  transition: max-height 0.5s ease; /* Slower animation */
+}
+
+.copy-btn {
+  background: #1a5fb4; /* Blue instead of gray */
+  color: white;
+}
+
+/* Discussion Styles */
+.discussion-section {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 2rem 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.upvote-btn {
+  background: transparent;
+  border: 1px solid #ddd;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-left: 1rem;
+  transition: all 0.2s;
+}
+
+.upvote-btn:hover {
+  background: #f0f7ff;
+  border-color: #4dabf7;
+}
+
+.response-card {
+  background: white;
+  padding: 1rem;
+  margin: 0.5rem 0;
+  border-radius: 6px;
+  border-left: 3px solid #4dabf7;
+}
+
+/* Response Form Styles */
+.response-form {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.response-input {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: inherit;
+  margin-bottom: 0.5rem;
+}
+
+.submit-btn {
+  background: #1a5fb4;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background: #1a4fa4;
+}
+
+.response-card {
+  background: white;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.response-card small {
+  display: block;
+  color: #666;
+  margin-top: 0.3rem;
+  font-size: 0.8em;
+}
+
+/* Enhanced Text Area Styles */
+.response-input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 16px;
+  resize: vertical;
+  min-height: 100px;
+  transition: all 0.2s;
+  line-height: 1.5;
+}
+
+.response-input:focus {
+  border-color: #4dabf7;
+  box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.2);
+  outline: none;
+}
+
+.textarea-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+#char-count {
+  font-size: 14px;
+  color: #64748b;
+}
+
+.submit-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #1a5fb4;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.submit-btn:hover {
+  background: #164b8c;
+  transform: translateY(-1px);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+/* Font Awesome icons (if using) */
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
+
+.reveal-btn {
+  background: #1a5fb4;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem;
+  font-size: 0.8em;
+}
+
+.answer-box {
+  background: #f8f9fa;
+  padding: 12px;
+  border-radius: 4px;
+  margin-top: 1rem;
+  border-left: 3px solid #4CAF50;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

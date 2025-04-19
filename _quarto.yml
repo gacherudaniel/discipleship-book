@@ -7,8 +7,18 @@ book:
   author: "Your Name"
   chapters:
     - index.qmd
+    - quiz.qmd
+    - discussion.qmd
 
 format:
   html:
     theme: cosmo
     toc: true
+    include-after-body: scripts.html
+    css: resources/styles.css
+
+revealjs:
+  transition: slide
+  quiz:
+    correct: "✅ Correct!"
+    incorrect: "❌ Try again!"

@@ -1,0 +1,33 @@
+## Discussion Questions
+
+### Core Question
+**What does this passage reveal about God's character?**  
+*(Leader's guide: Focus on verses 5-8)*  
+
+### Personal Reflection
+- How does this challenge your current perspective?
+- When have you experienced this truth in your life?
+
+### Group Activity
+**Breakout Groups (10 mins):**  
+1. Share one practical application  
+2. Pray for each other's struggles  
+
+### Share Your Thoughts
+
+```{=html}
+<div class="response-form">
+  <textarea 
+    placeholder="Share your thoughts... (Try to reference specific verses)" 
+    rows="4"
+    class="response-input"
+    id="discussion-textarea"
+    spellcheck="true"
+  ></textarea>
+  <div class="textarea-footer">
+    <span id="char-count">0/500</span>
+    <button class="submit-btn" onclick="submitResponse()">
+      <i class="fas fa-paper-plane"></i> Post
+    </button>
+  </div>
+</div>

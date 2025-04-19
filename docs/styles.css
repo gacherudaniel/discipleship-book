@@ -1,0 +1,19 @@
+/* Bible verse links */
+.verse-link {
+  color: #1a5fb4;
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+/* Disqus container */
+#disqus_thread {
+  margin-top: 3rem;
+  padding: 1rem;
+  border-top: 1px solid #eee;
+}
+
+/* Quiz slides */
+.reveal .slides section {
+  font-size: 1.5em;
+}

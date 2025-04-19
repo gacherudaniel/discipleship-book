@@ -1,0 +1,42 @@
+---
+format: revealjs
+---
+
+## Quiz: Discipleship Basics
+
+### Question 1
+
+What does "disciple" mean?
+
+```{=html}
+<button class="reveal-btn" data-question="1">Reveal Answer</button>
+
+<div id="answer1" class="answer-box" style="display:none;">
+  Correct answer: <strong>A follower of Jesus</strong> (Matthew 28:19)
+</div>
+
+<!-- Mark correct answer in your list -->
+
+- [ ] A student
+- [x] A follower of Jesus
+- [ ] A religious leader
+
+---
+
+### Question 2
+
+"Faith without works is dead" is from:
+
+
+<button class="reveal-btn" data-question="2">Reveal Answer</button>
+
+<div id="answer2" class="answer-box" style="display:none;">
+  Correct answer: <strong>James 2</strong>
+</div>
+
+<!-- Mark correct answer in your list -->
+
+- [ ] Matthew 5
+- [x] James 2
+- [ ] John 3
+```
