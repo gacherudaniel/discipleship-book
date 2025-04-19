@@ -7,8 +7,6 @@ book:
   author: "Your Name"
   chapters:
     - index.qmd
-    - lesson1.qmd
-    - lesson2.qmd
 
 format:
   html:
