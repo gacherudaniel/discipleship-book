@@ -8,7 +8,7 @@ format: revealjs
 
 What does "disciple" mean?
 
-```{=html}
+````{=html}
 <button class="reveal-btn" data-question="1">Reveal Answer</button>
 
 <div id="answer1" class="answer-box" style="display:none;">
@@ -17,9 +17,14 @@ What does "disciple" mean?
 
 <!-- Mark correct answer in your list -->
 
+
+
 - [ ] A student
 - [x] A follower of Jesus
 - [ ] A religious leader
+
+
+
 
 ---
 
@@ -28,6 +33,18 @@ What does "disciple" mean?
 "Faith without works is dead" is from:
 
 
+
+
+
+
+
+- [ ] Matthew 5
+- [x] James 2
+- [ ] John 3
+
+
+
+```{=html}
 <button class="reveal-btn" data-question="2">Reveal Answer</button>
 
 <div id="answer2" class="answer-box" style="display:none;">
@@ -36,7 +53,5 @@ What does "disciple" mean?
 
 <!-- Mark correct answer in your list -->
 
-- [ ] Matthew 5
-- [x] James 2
-- [ ] John 3
-```
+
+````
