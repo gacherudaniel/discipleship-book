@@ -24,7 +24,7 @@
     "href": "quiz.html",
     "title": "2  Quiz: Discipleship Basics",
     "section": "",
-    "text": "2.0.1 Question 1\nWhat does “disciple” mean?\nReveal Answer\n\n  Correct answer: A follower of Jesus (Matthew 28:19)\n\n\n- [ ] A student\n- [x] A follower of Jesus\n- [ ] A religious leader\n\n\n\n### Question 2\n\n\"Faith without works is dead\" is from:\n```{=html}\nReveal Answer\n\n  Correct answer: James 2 (James 2:26)\n\n\nMatthew 5\nJames 2\nJohn 3",
+    "text": "2.0.1 Question 1\nWhat does “disciple” mean?\nReveal Answer\n\n\n  Correct answer: A follower of Jesus (Matthew 28:19)\n\n\n\n\n- [ ] A student\n- [x] A follower of Jesus\n- [ ] A religious leader\n\n---\n\n### Question 2\n\n\"Faith without works is dead\" is from:\n\n\nReveal Answer\n\n\n  Correct answer: James 2\n\n\n\n\n- [ ] Matthew 5\n- [x] James 2\n- [ ] John 3",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Quiz: Discipleship Basics</span>"
     ]
@@ -34,7 +34,7 @@
     "href": "discussion.html",
     "title": "3  Discussion Questions",
     "section": "",
-    "text": "3.0.1 Core Question\nWhat does this passage reveal about God’s character?\n(Leader’s guide: Focus on verses 5-8)\n\n\n3.0.2 Personal Reflection\n\nHow does this challenge your current perspective?\nWhen have you experienced this truth in your life?\n\n\n\n3.0.3 Group Activity\nBreakout Groups (10 mins):\n1. Share one practical application\n2. Pray for each other’s struggles\n\n\n3.0.4 Share Your Thoughts\n\n\nPost Reflection",
+    "text": "3.0.1 Core Question\nWhat does this passage reveal about God’s character?\n(Leader’s guide: Focus on verses 5-8)\n\n\n3.0.2 Personal Reflection\n\nHow does this challenge your current perspective?\nWhen have you experienced this truth in your life?\n\n\n\n3.0.3 Group Activity\nBreakout Groups (10 mins):\n1. Share one practical application\n2. Pray for each other’s struggles\n\n\n3.0.4 Share Your Thoughts\n\n\n\n&lt;span id=\"char-count\"&gt;0/500&lt;/span&gt;\n&lt;button class=\"submit-btn\" onclick=\"submitResponse()\"&gt;\n  &lt;i class=\"fas fa-paper-plane\"&gt;&lt;/i&gt; Post\n&lt;/button&gt;",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Discussion Questions</span>"
     ]

@@ -185,8 +185,13 @@ ul.task-list li input[type="checkbox"] {
 <section id="share-your-thoughts" class="level3" data-number="3.0.4">
 <h3 data-number="3.0.4" class="anchored" data-anchor-id="share-your-thoughts"><span class="header-section-number">3.0.4</span> Share Your Thoughts</h3>
 <div class="response-form">
-<textarea placeholder="What stood out to you?" rows="3"></textarea>
-<p><button class="submit-btn">Post Reflection</button></p>
+<textarea placeholder="Share your thoughts... (Try to reference specific verses)" rows="4" class="response-input" id="discussion-textarea" spellcheck="true"></textarea>
+<div class="textarea-footer">
+<pre><code>&lt;span id="char-count"&gt;0/500&lt;/span&gt;
+&lt;button class="submit-btn" onclick="submitResponse()"&gt;
+  &lt;i class="fas fa-paper-plane"&gt;&lt;/i&gt; Post
+&lt;/button&gt;</code></pre>
+</div>
 </div>
 
 
@@ -203,113 +208,49 @@ ul.task-list li input[type="checkbox"] {
 
       style.textContent = `
 
-        .verse-container {
+        /* Your existing styles... */
 
-          max-height: 0;
+        .reveal-btn {
 
-          overflow: hidden;
+          background: #1a5fb4;
 
-          padding: 0 10px;
-
-          margin: 0;
-
-          background-color: #f8f9fa;
-
-          border-left: 3px solid #1a5fb4;
-
-          transition: max-height 0.3s ease, padding 0.3s ease, margin 0.3s ease;
-
-        }
-
-        .verse-container.open {
-
-          max-height: 500px;
-
-          padding: 10px;
-
-          margin: 10px 0;
-
-        }
-
-        .verse-link.active {
-
-          font-weight: bold;
-
-          color: #1a5fb4;
-
-        }
-
-        .verse-link.loading {
-
-          color: #999;
-
-        }
-
-        .verse-actions {
-
-          margin-top: 8px;
-
-          text-align: right;
-
-        }
-
-        .copy-btn {
-
-          background: #e1e1e1;
+          color: white;
 
           border: none;
 
-          padding: 2px 8px;
+          padding: 8px 16px;
 
-          border-radius: 3px;
+          border-radius: 4px;
 
           cursor: pointer;
+
+          margin-top: 1rem;
 
           font-size: 0.8em;
 
         }
 
-        .copy-btn:hover {
+        .answer-box {
 
-          background: #d1d1d1;
+          background: #f8f9fa;
 
-        }
+          padding: 12px;
 
-        .copy-btn.copied {
+          border-radius: 4px;
 
-          background: #4CAF50;
+          margin-top: 1rem;
 
-          color: white;
+          border-left: 3px solid #4CAF50;
 
-        }
-
-        .upvote-btn {
-
-          background: transparent;
-
-          border: 1px solid #ddd;
-
-          padding: 0.25rem 0.5rem;
-
-          border-radius: 12px;
-
-          cursor: pointer;
-
-          margin-left: 1rem;
+          animation: fadeIn 0.3s ease;
 
         }
 
-        .response-card {
+        @keyframes fadeIn {
 
-          background: white;
+          from { opacity: 0; }
 
-          padding: 1rem;
-
-          margin: 0.5rem 0;
-
-          border-radius: 6px;
-
-          border-left: 3px solid #4dabf7;
+          to { opacity: 1; }
 
         }
 
@@ -319,335 +260,479 @@ ul.task-list li input[type="checkbox"] {
 
     
 
-      // Bible Verse Functionality
+      // Initialize all systems
 
-      function handleVerseClick(e) {
+      initializeVerseSystem();
 
-        e.preventDefault();
+      initializeUpvoteSystem();
 
-        const link = e.currentTarget;
+      initializeDiscussionSystem();
 
-        const reference = link.getAttribute('data-verse');
+      initializeQuizSystem();
 
-        const containerId = 'verse-' + reference.replace(/\s+/g, '-');
+      loadSavedData();
 
-        
+    });
 
-        // Close all other verses
+    
 
-        document.querySelectorAll('.verse-container.open').forEach(c => {
+    // ====== BIBLE VERSE SYSTEM ======
 
-          if (c.id !== containerId) {
+    function initializeVerseSystem() {
 
-            c.classList.remove('open');
+      document.querySelectorAll('.verse-link').forEach(link => {
 
-            document.querySelector(`.verse-link[data-verse="${c.id.replace('verse-', '').replace(/-/g, ' ')}"]`)
+        link.addEventListener('click', handleVerseClick);
 
-              .classList.remove('active');
+      });
 
-          }
+    }
+
+    
+
+    function handleVerseClick(e) {
+
+      e.preventDefault();
+
+      const link = e.currentTarget;
+
+      const reference = link.getAttribute('data-verse');
+
+      const containerId = 'verse-' + reference.replace(/\s+/g, '-');
+
+      
+
+      // Close all other verses
+
+      document.querySelectorAll('.verse-container.open').forEach(c => {
+
+        if (c.id !== containerId) {
+
+          c.classList.remove('open');
+
+          document.querySelector(`.verse-link[data-verse="${c.id.replace('verse-', '').replace(/-/g, ' ')}"]`)
+
+            .classList.remove('active');
+
+        }
+
+      });
+
+    
+
+      // Toggle current verse
+
+      let container = document.getElementById(containerId);
+
+      if (!container) {
+
+        container = createVerseContainer(link, containerId, reference);
+
+      } else {
+
+        container.classList.toggle('open');
+
+        link.classList.toggle('active');
+
+        updateLocalStorage('lastOpenVerse', containerId, container.classList.contains('open'));
+
+      }
+
+    }
+
+    
+
+    function createVerseContainer(link, containerId, reference) {
+
+      const container = document.createElement('div');
+
+      container.className = 'verse-container';
+
+      container.id = containerId;
+
+      link.parentNode.insertBefore(container, link.nextSibling);
+
+      link.classList.add('loading');
+
+    
+
+      fetch(`https://bible-api.com/${reference}?translation=kjv`)
+
+        .then(response => response.json())
+
+        .then(data => {
+
+          container.innerHTML = `
+
+            <div class="verse-content">
+
+              <strong>${reference}</strong>
+
+              <p>${data.text}</p>
+
+            </div>
+
+            <div class="verse-actions">
+
+              <button class="copy-btn" data-verse="${reference}">Copy</button>
+
+            </div>
+
+          `;
+
+          container.classList.add('open');
+
+          link.classList.remove('loading');
+
+          link.classList.add('active');
+
+          updateLocalStorage('lastOpenVerse', containerId, true);
+
+          setupCopyButton(container.querySelector('.copy-btn'), reference, data.text);
+
+        })
+
+        .catch(error => {
+
+          container.innerHTML = `<p>Error loading verse: ${reference}</p>`;
+
+          link.classList.remove('loading');
 
         });
 
     
 
-        // Toggle current verse
+      return container;
 
-        let container = document.getElementById(containerId);
-
-        if (!container) {
-
-          container = createVerseContainer(link, containerId, reference);
-
-        } else {
-
-          container.classList.toggle('open');
-
-          link.classList.toggle('active');
-
-          updateLocalStorage(containerId, container.classList.contains('open'));
-
-        }
-
-      }
+    }
 
     
 
-      function createVerseContainer(link, containerId, reference) {
+    // ====== UPVOTE SYSTEM ======
 
-        const container = document.createElement('div');
+    function initializeUpvoteSystem() {
 
-        container.className = 'verse-container';
-
-        container.id = containerId;
-
-        link.parentNode.insertBefore(container, link.nextSibling);
-
-        link.classList.add('loading');
-
-    
-
-        fetch(`https://bible-api.com/${reference}?translation=kjv`)
-
-          .then(response => response.json())
-
-          .then(data => {
-
-            container.innerHTML = `
-
-              <div class="verse-content">
-
-                <strong>${reference}</strong>
-
-                <p>${data.text}</p>
-
-              </div>
-
-              <div class="verse-actions">
-
-                <button class="copy-btn" data-verse="${reference}">Copy</button>
-
-              </div>
-
-            `;
-
-            container.classList.add('open');
-
-            link.classList.remove('loading');
-
-            link.classList.add('active');
-
-            updateLocalStorage(containerId, true);
-
-            setupCopyButton(container.querySelector('.copy-btn'), reference, data.text);
-
-          })
-
-          .catch(error => {
-
-            container.innerHTML = `<p>Error loading verse: ${reference}</p>`;
-
-            link.classList.remove('loading');
-
-          });
-
-    
-
-        return container;
-
-      }
-
-    
-
-      function setupCopyButton(button, reference, text) {
-
-        button.addEventListener('click', (e) => {
-
-          e.stopPropagation();
-
-          navigator.clipboard.writeText(`${reference} - ${text}`).then(() => {
-
-            button.classList.add('copied');
-
-            button.textContent = 'Copied!';
-
-            setTimeout(() => {
-
-              button.classList.remove('copied');
-
-              button.textContent = 'Copy';
-
-            }, 2000);
-
-          });
-
-        });
-
-      }
-
-    
-
-      function updateLocalStorage(containerId, isOpen) {
-
-        if (isOpen) {
-
-          localStorage.setItem('lastOpenVerse', containerId);
-
-        } else {
-
-          localStorage.removeItem('lastOpenVerse');
-
-        }
-
-      }
-
-    
-
-      // Upvote System
-
-      function handleUpvoteClick(e) {
-
-        e.stopPropagation();
-
-        const button = e.currentTarget;
-
-        const count = button.querySelector('.count');
-
-        count.textContent = parseInt(count.textContent) + 1;
-
-        
-
-        const question = button.closest('.discussion-question');
+      document.querySelectorAll('.discussion-question').forEach(question => {
 
         const questionId = question.id || question.textContent.substring(0, 20);
 
-        saveUpvote(questionId);
+        const upvoteBtn = document.createElement('button');
 
-      }
-
-    
-
-      function saveUpvote(questionId) {
-
-        const upvotes = JSON.parse(localStorage.getItem('discussionUpvotes') || '{}');
-
-        upvotes[questionId] = (upvotes[questionId] || 0) + 1;
-
-        localStorage.setItem('discussionUpvotes', JSON.stringify(upvotes));
-
-      }
-
-    
-
-      // Discussion Responses
-
-      function handleResponseSubmit() {
-
-        const input = document.getElementById('discussion-textarea');
-
-        const text = input.value.trim();
+        upvoteBtn.className = 'upvote-btn';
 
         
 
-        if (!validateResponse(text)) return;
+        // Load saved upvote count
+
+        const savedUpvotes = JSON.parse(localStorage.getItem('discussionUpvotes') || '{}');
+
+        const initialCount = savedUpvotes[questionId] || 0;
 
         
 
-        const responsesContainer = document.getElementById('responses-container');
+        upvoteBtn.innerHTML = `👍 <span class="count">${initialCount}</span>`;
 
-        const responseDiv = createResponseElement(text);
+        question.appendChild(upvoteBtn);
 
-        responsesContainer.prepend(responseDiv);
+        upvoteBtn.addEventListener('click', (e) => handleUpvoteClick(e, questionId));
+
+      });
+
+    }
+
+    
+
+    function handleUpvoteClick(e, questionId) {
+
+      e.stopPropagation();
+
+      const button = e.currentTarget;
+
+      const count = button.querySelector('.count');
+
+      const newCount = parseInt(count.textContent) + 1;
+
+      count.textContent = newCount;
+
+      
+
+      // Save to localStorage
+
+      const upvotes = JSON.parse(localStorage.getItem('discussionUpvotes') || '{}');
+
+      upvotes[questionId] = newCount;
+
+      localStorage.setItem('discussionUpvotes', JSON.stringify(upvotes));
+
+    }
+
+    
+
+    // ====== DISCUSSION SYSTEM ======
+
+    function initializeDiscussionSystem() {
+
+      const textarea = document.getElementById('discussion-textarea');
+
+      if (textarea) {
+
+        textarea.addEventListener('input', handleCharCount);
+
+        document.querySelector('.submit-btn')?.addEventListener('click', handleResponseSubmit);
+
+      }
+
+    }
+
+    
+
+    function handleCharCount() {
+
+      const maxLength = 500;
+
+      const currentLength = this.value.length;
+
+      const counter = document.getElementById('char-count');
+
+      
+
+      if (counter) {
+
+        counter.textContent = `${currentLength}/${maxLength}`;
+
+        counter.style.color = currentLength > maxLength * 0.9 ? '#ef4444' : '#64748b';
+
+      }
+
+    }
+
+    
+
+    function handleResponseSubmit() {
+
+      const input = document.getElementById('discussion-textarea');
+
+      const text = input.value.trim();
+
+      
+
+      if (!validateResponse(text)) return;
+
+      
+
+      const responsesContainer = document.getElementById('responses-container');
+
+      const responseDiv = createResponseElement(text);
+
+      responsesContainer.prepend(responseDiv);
+
+      
+
+      input.value = '';
+
+      saveResponse(text);
+
+    }
+
+    
+
+    // ====== QUIZ SYSTEM ======
+
+    function initializeQuizSystem() {
+
+      document.querySelectorAll('.reveal-btn').forEach(btn => {
+
+        const questionNum = btn.getAttribute('data-question');
+
+        btn.addEventListener('click', () => showAnswer(questionNum));
+
+      });
+
+    }
+
+    
+
+    function showAnswer(questionNum) {
+
+      const answerBox = document.getElementById(`answer${questionNum}`);
+
+      if (answerBox) {
+
+        answerBox.style.display = answerBox.style.display === 'none' ? 'block' : 'none';
 
         
 
-        input.value = '';
+        // Highlight correct answer (works with revealjs slides)
 
-        saveResponse(text);
+        const currentSlide = document.querySelector('section.present');
 
-      }
+        if (currentSlide) {
 
-    
+          const correctOption = currentSlide.querySelector(`li.correct-answer`);
 
-      function validateResponse(text) {
+          if (correctOption) {
 
-        if (!text) {
+            correctOption.style.color = '#4CAF50';
 
-          const input = document.getElementById('discussion-textarea');
-
-          input.style.borderColor = '#ef4444';
-
-          setTimeout(() => input.style.borderColor = '#e2e8f0', 2000);
-
-          return false;
-
-        }
-
-        
-
-        if (text.length > 500) {
-
-          alert('Please keep responses under 500 characters');
-
-          return false;
-
-        }
-
-        
-
-        return true;
-
-      }
-
-    
-
-      function createResponseElement(text) {
-
-        const responseDiv = document.createElement('div');
-
-        responseDiv.className = 'response-card';
-
-        responseDiv.innerHTML = `
-
-          <strong>You:</strong> ${text}
-
-          <small>${new Date().toLocaleString()}</small>
-
-        `;
-
-        return responseDiv;
-
-      }
-
-    
-
-      function saveResponse(text) {
-
-        const responses = JSON.parse(localStorage.getItem('discussionResponses') || '[]');
-
-        responses.push({
-
-          text: text,
-
-          timestamp: new Date().toISOString()
-
-        });
-
-        localStorage.setItem('discussionResponses', JSON.stringify(responses));
-
-      }
-
-    
-
-      function loadSavedData() {
-
-        // Load last open verse
-
-        const lastOpenVerse = localStorage.getItem('lastOpenVerse');
-
-        if (lastOpenVerse) {
-
-          const container = document.getElementById(lastOpenVerse);
-
-          const link = document.querySelector(`.verse-link[data-verse="${lastOpenVerse.replace('verse-', '').replace(/-/g, ' ')}"]`);
-
-          if (container && link) {
-
-            container.classList.add('open');
-
-            link.classList.add('active');
+            correctOption.style.fontWeight = 'bold';
 
           }
 
         }
 
-        
+      }
 
-        // Load saved responses
+    }
 
-        const responses = JSON.parse(localStorage.getItem('discussionResponses') || []);
+    
 
-        const container = document.getElementById('responses-container');
+    // ====== UTILITY FUNCTIONS ======
+
+    function setupCopyButton(button, reference, text) {
+
+      button.addEventListener('click', (e) => {
+
+        e.stopPropagation();
+
+        navigator.clipboard.writeText(`${reference} - ${text}`).then(() => {
+
+          button.classList.add('copied');
+
+          button.textContent = 'Copied!';
+
+          setTimeout(() => {
+
+            button.classList.remove('copied');
+
+            button.textContent = 'Copy';
+
+          }, 2000);
+
+        });
+
+      });
+
+    }
+
+    
+
+    function updateLocalStorage(key, value, shouldSave) {
+
+      if (shouldSave) {
+
+        localStorage.setItem(key, value);
+
+      } else {
+
+        localStorage.removeItem(key);
+
+      }
+
+    }
+
+    
+
+    function validateResponse(text) {
+
+      if (!text) {
+
+        const input = document.getElementById('discussion-textarea');
+
+        input.style.borderColor = '#ef4444';
+
+        setTimeout(() => input.style.borderColor = '#e2e8f0', 2000);
+
+        return false;
+
+      }
+
+      
+
+      if (text.length > 500) {
+
+        alert('Please keep responses under 500 characters');
+
+        return false;
+
+      }
+
+      
+
+      return true;
+
+    }
+
+    
+
+    function createResponseElement(text) {
+
+      const responseDiv = document.createElement('div');
+
+      responseDiv.className = 'response-card';
+
+      responseDiv.innerHTML = `
+
+        <strong>You:</strong> ${text}
+
+        <small>${new Date().toLocaleString()}</small>
+
+      `;
+
+      return responseDiv;
+
+    }
+
+    
+
+    function saveResponse(text) {
+
+      const responses = JSON.parse(localStorage.getItem('discussionResponses') || '[]');
+
+      responses.unshift({  // Add to beginning of array
+
+        text: text,
+
+        timestamp: new Date().toISOString()
+
+      });
+
+      localStorage.setItem('discussionResponses', JSON.stringify(responses));
+
+    }
+
+    
+
+    function loadSavedData() {
+
+      // Load last open verse
+
+      const lastOpenVerse = localStorage.getItem('lastOpenVerse');
+
+      if (lastOpenVerse) {
+
+        const container = document.getElementById(lastOpenVerse);
+
+        const link = document.querySelector(`.verse-link[data-verse="${lastOpenVerse.replace('verse-', '').replace(/-/g, ' ')}"]`);
+
+        if (container && link) {
+
+          container.classList.add('open');
+
+          link.classList.add('active');
+
+        }
+
+      }
+
+      
+
+      // Load saved responses
+
+      const responses = JSON.parse(localStorage.getItem('discussionResponses') || '[]');
+
+      const container = document.getElementById('responses-container');
+
+      if (container) {
 
         responses.forEach(response => {
 
@@ -657,63 +742,23 @@ ul.task-list li input[type="checkbox"] {
 
       }
 
-    
+      
 
-      // Initialize event listeners
+      // Load quiz progress
 
-      document.querySelectorAll('.verse-link').forEach(link => {
+      document.querySelectorAll('.reveal-btn').forEach(btn => {
 
-        link.addEventListener('click', handleVerseClick);
+        const questionNum = btn.getAttribute('data-question');
 
-      });
+        if (localStorage.getItem(`quizRevealed_${questionNum}`)) {
 
-    
-
-      document.querySelectorAll('.discussion-question').forEach(question => {
-
-        const upvoteBtn = document.createElement('button');
-
-        upvoteBtn.className = 'upvote-btn';
-
-        upvoteBtn.innerHTML = '👍 <span class="count">0</span>';
-
-        question.appendChild(upvoteBtn);
-
-        upvoteBtn.addEventListener('click', handleUpvoteClick);
-
-      });
-
-    
-
-      // Character counter
-
-      document.getElementById('discussion-textarea')?.addEventListener('input', function() {
-
-        const maxLength = 500;
-
-        const currentLength = this.value.length;
-
-        const counter = document.getElementById('char-count');
-
-        
-
-        if (counter) {
-
-          counter.textContent = `${currentLength}/${maxLength}`;
-
-          counter.style.color = currentLength > maxLength * 0.9 ? '#ef4444' : '#64748b';
+          showAnswer(questionNum);
 
         }
 
       });
 
-    
-
-      // Load saved data when page loads
-
-      loadSavedData();
-
-    });
+    }
 
     </script>
 <script id="quarto-html-after-body" type="application/javascript">
