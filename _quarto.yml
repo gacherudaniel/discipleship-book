@@ -1,0 +1,16 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "Discipleship Class"
+  author: "Your Name"
+  chapters:
+    - index.qmd
+    - lesson1.qmd
+    - lesson2.qmd
+
+format:
+  html:
+    theme: cosmo
+    toc: true
